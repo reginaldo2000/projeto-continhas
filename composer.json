@@ -1,0 +1,23 @@
+{
+    "name": "app/simple-contas",
+    "autoload": {
+        "psr-4": {
+            "Source\\":"source/"
+        },
+        "files": [
+            "source/Config/Config.php",
+            "source/Util/Helpers.php"
+        ]
+    },
+    "require": {
+        "php": ">=7.4",
+        "coffeecode/router": "1.0.8",
+        "coffeecode/optimizer": "2.0.2",
+        "league/plates": "3.4",
+        "doctrine/orm": "^2.11.0",
+        "doctrine/dbal": "^3.2",
+        "doctrine/annotations": "1.13.2",
+        "symfony/yaml": "^5.4",
+        "symfony/cache": "^5.4"
+    }
+}
