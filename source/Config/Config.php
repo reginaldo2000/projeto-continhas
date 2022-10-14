@@ -8,7 +8,7 @@ session_start([
     "name" => "app_contas"
 ]);
 
-define("URL_BASE", "http://192.168.1.6/simple-contas");
+define("URL_BASE", "http://localhost/projeto-continhas");
 
 define("DB_HOST", "localhost");
 define("DB_NAME", "app_contas");

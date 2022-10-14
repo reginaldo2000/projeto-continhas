@@ -1,4 +1,4 @@
-const URL_BASE = "http://192.168.1.6/simple-contas";
+const URL_BASE = "http://localhost/projeto-continhas";
 
 const prepareNova = () => {
     document.querySelector("#modal-nova-conta .modal-title").innerHTML = "Nova Conta";

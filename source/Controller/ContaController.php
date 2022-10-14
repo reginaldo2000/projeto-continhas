@@ -2,7 +2,6 @@
 
 namespace Source\Controller;
 
-use ArrayObject;
 use DateTime;
 use Source\Entity\Conta;
 use Source\Enum\CategoriaEnum;
@@ -114,7 +113,7 @@ class ContaController extends Controller
         $em = EntityManagerFactory::getEntityManager();
 
         $restricao = [];
-        if($categoria != "") {
+        if ($categoria != "") {
             $restricao["categoria"] = $categoria;
         }
         return $em->getRepository(Conta::class)->findBy($restricao, [
@@ -153,11 +152,12 @@ class ContaController extends Controller
 
         $query = $em->getRepository(Conta::class)->createQueryBuilder("c")
             ->where("c.categoria = :categoria AND (c.data BETWEEN :dataI AND :dataF OR c.categoria = :cat)")
-            ->setParameter("categoria", $categoria)
-            ->setParameter("dataI", $dataInicial)
-            ->setParameter("dataF", $dataFinal)
-            ->setParameter("cat", CategoriaEnum::GASTO_FIXO)
-            ->getQuery();
+            ->setParameters([
+                "categoria" => $categoria,
+                "dataI" => $dataInicial,
+                "dataF" => $dataFinal,
+                "cat" => CategoriaEnum::GASTO_FIXO
+            ])->getQuery();
 
         return $query->getResult();
     }

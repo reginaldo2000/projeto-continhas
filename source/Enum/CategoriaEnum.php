@@ -2,7 +2,7 @@
 
 namespace Source\Enum;
 
-class CategoriaEnum
+class CategoriaEnum extends Teste
 {
 
     const ALIMENTACAO = "ALIMENTACAO";
