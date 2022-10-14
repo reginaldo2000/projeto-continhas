@@ -21,7 +21,7 @@ const prepareEdicao = (id) => {
 
             elementos.forEach(item => {
                 Object.keys(dados).forEach(obj => {
-                    if(item.getAttribute("name") === obj) {
+                    if (item.getAttribute("name") === obj) {
                         item.value = dados[obj];
                     }
                 })
@@ -43,11 +43,24 @@ const prepareDelete = (id) => {
         url: urlRequest,
         success: (response) => {
             const form = document.getElementById("formExcluirConta");
-            
+
             form.setAttribute("action", `${URL_BASE}/conta/excluir/${response.data.id}`);
             document.getElementById("excluir-conta").innerHTML = response.data.descricao;
             $("#modal-excluir-conta").modal("show");
         }
     });
-    
+}
+
+const selecionaCategoria = (value) => {
+    if (value === "COMPRA_PARCELADA") {
+        $("#numParcelas").removeAttr("hidden");
+        return;
+    }
+    $("#numParcelas").attr("hidden", true);
+    $("#numParcelas input").val("1");
+}
+
+const formataMoeda = (value) => {
+    let input = value.replace(",", ".").replace(".", "");
+    $("#valor").val(parseFloat(input/100).toFixed(2).replace(".", ","));
 }

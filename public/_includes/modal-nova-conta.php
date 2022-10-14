@@ -18,16 +18,21 @@
 
                         <div class="col-lg-6">
                             <label for="">Categoria:</label>
-                            <select name="categoria" class="form-control">
+                            <select name="categoria" class="form-control" onchange="selecionaCategoria(this.value);">
                                 <?php foreach ($categorias as $cat) : ?>
                                     <option value="<?= $cat; ?>"><?= $cat; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
 
+                        <div id="numParcelas" class="col-lg-6" hidden>
+                            <label for="">Nº de Parcelas:</label>
+                            <input type="number" name="num_parcelas"  class="form-control" value="1">
+                        </div>
+
                         <div class="col-lg-6">
                             <label for="">Valor:</label>
-                            <input type="text" name="valor" class="form-control" required>
+                            <input type="text" name="valor" id="valor" class="form-control" onkeyup="formataMoeda(this.value);" required>
                         </div>
 
                         <div class="col-lg-6">

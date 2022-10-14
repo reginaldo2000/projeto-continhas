@@ -44,7 +44,7 @@ class Conta implements InterfaceEntity
 
     public function isValid(): bool
     {
-        if ($this->descricao == "") {
+        if ($this->descricao == "" || $this->categoria == "" || $this->valor == 0.0 || $this->data == "") {
             return false;
         }
         return true;

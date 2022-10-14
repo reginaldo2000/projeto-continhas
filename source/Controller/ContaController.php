@@ -30,21 +30,18 @@ class ContaController extends Controller
 
     public function salvar(array $data): void
     {
-        $em = EntityManagerFactory::getEntityManager();
+        $categoria = $data["categoria"] ?? "";
+        $numParcelas = $data["num_parcelas"];
 
-        $conta = new Conta();
-        $conta->setDescricao($data["descricao"] ?? "");
-        $conta->setCategoria($data["categoria"] ?? "");
-        $conta->setValor($data["valor"] ?? "");
-        $conta->setData(new DateTime($data["data"]));
-
-        if (!$conta->isValid()) {
-            setMessage("Preencha os campos corretamente!", "alert-danger");
-            redirect("/contas");
+        if ($categoria == CategoriaEnum::COMPRA_PARCELADA) {
+            for ($i = 0; $i < $numParcelas; $i++) {
+                $dataConta = new DateTime($data["data"]);
+                $dataConta->setDate(date("Y"), (date("m")+$i), date("d"));
+                $this->saveConta($data, $dataConta, $i+1, $numParcelas);
+            }
+        } else {
+            $this->saveConta($data, new DateTime($data["data"]));
         }
-
-        $em->persist($conta);
-        $em->flush();
 
         setMessage("Conta cadastrada com sucesso!");
         redirect("/contas");
@@ -192,5 +189,28 @@ class ContaController extends Controller
         $valorTotal = $query->getOneOrNullResult()["valor"];
 
         return $valorTotal;
+    }
+
+    private function saveConta(array $data, DateTime $dataConta, int $numParcela = 1, int $totalParcelas = 1): void
+    {
+        $em = EntityManagerFactory::getEntityManager();
+
+        $conta = new Conta();
+        $conta->setCategoria($data["categoria"] ?? "");
+        $conta->setDescricao($data["descricao"] ?? "");
+        $descricao = ($conta->getCategoria() == CategoriaEnum::COMPRA_PARCELADA ? $conta->getDescricao()." ({$numParcela}/{$totalParcelas})" : $conta->getDescricao());
+        $conta->setDescricao($descricao);
+        $conta->setValor(str_replace(",", ".", $data["valor"] ?? 0));
+        $conta->setData($dataConta);
+        $valor = $conta->getValor() / $totalParcelas;
+        $conta->setValor($valor);
+
+        if (!$conta->isValid()) {
+            setMessage("Preencha os campos corretamente!", "alert-danger");
+            redirect("/contas");
+        }
+
+        $em->persist($conta);
+        $em->flush();
     }
 }
